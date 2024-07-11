@@ -11,10 +11,9 @@ app = Flask(__name__)
 @app.route("/api/pincode", methods = ['POST'])
 def pincode():
     if request.method == 'POST':
+        # loading the json data from the POST request
         data = json.loads(str(request.data, encoding='utf-8'))
 
         pincode = data["pincode"]
-
         
-
         return jsonify({"pincode": pincode})
