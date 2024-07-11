@@ -1,11 +1,9 @@
 {
-  "name": "next-flask",
+  "name": "dmvhelp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "flask-dev": "python -m flask --app api/index --debug run -p 5328",
-    "next-dev": "next dev",
-    "dev": "concurrently \"npm run next-dev\" \"npm run flask-dev\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
