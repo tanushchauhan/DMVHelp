@@ -50,7 +50,51 @@ function Page() {
     if (!logincheck.success) return;
 
     setLoginStatus(logincheck.data);
+
+    let appointmentsString = "";
     setUiState(2);
+
+    for (let i = 0; i < pincodes.length; i++) {
+      let pincodeYetString;
+      if (i === pincodes.length - 1) pincodeYetString = "None";
+      else {
+        pincodeYetString = pincodes
+          .slice(i + 1)
+          .reduce((acc, e) => acc + ", " + e, "")
+          .slice(2);
+      }
+
+      setPincodesYet(pincodeYetString);
+      setPincodesDoing(pincodes[i]);
+
+      let pincodesDoneString;
+      if (i === 0) pincodesDoneString = "None";
+      else {
+        pincodesDoneString = pincodes
+          .slice(0, i + 1)
+          .reduce((acc, e) => acc + ", " + e, "")
+          .slice(2);
+      }
+
+      setPincodesDone(pincodesDoneString);
+
+      const res = await fetch("/api/pincode", {
+        method: "POST",
+        body: JSON.stringify({
+          options: { mode: "pincode" },
+          data: {
+            dateOfBirth: date,
+            firstName: first_name,
+            lastName: last_name,
+            last4ssn,
+            pincode: pincodes[i],
+          },
+        }),
+      });
+
+      const resData = await res.json();
+      console.log(resData);
+    }
   }
 
   return (
