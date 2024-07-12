@@ -28,10 +28,6 @@ function Page() {
     const pincodes = e.target.pincodes.value.split(",");
     const beforeDate = e.target.beforeDate.value; // this will act as a filter for the avaliable appointments
 
-    const currPincode = pincodes[0];
-
-    let workingPincodes = pincodes.slice(1);
-
     const res = await fetch("/api/pincode", {
       method: "POST",
       body: JSON.stringify({
@@ -71,7 +67,7 @@ function Page() {
       if (i === 0) pincodesDoneString = "None";
       else {
         pincodesDoneString = pincodes
-          .slice(0, i + 1)
+          .slice(0, i)
           .reduce((acc, e) => acc + ", " + e, "")
           .slice(2);
       }
@@ -93,8 +89,15 @@ function Page() {
       });
 
       const resData = await res.json();
+      for (let i = 0; i < resData.data.length; i++) {}
       console.log(resData);
     }
+
+    let finalString = pincodes.reduce((acc, e) => acc + ", " + e, "").slice(2);
+
+    setPincodesYet("None");
+    setPincodesDoing("None");
+    setPincodesDone(finalString); // may need to handle some errors here in future
   }
 
   return (
