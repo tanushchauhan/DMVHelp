@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 function Page() {
-  const [uiState, setUiState] = useState(1); // toggle UI state
+  const [uiState, setUiState] = useState(2); // toggle UI state
 
   // States to give status to the user
   const [pincodesYet, setPincodesYet] = useState("None");
@@ -11,7 +11,7 @@ function Page() {
   const [pincodesDone, setPincodesDone] = useState("None");
 
   // Main output state
-  const [appointments, setAppointments] = useState("None");
+  const [appointments, setAppointments] = useState([]);
 
   //Login Status
   const [loginStatus, setLoginStatus] = useState("Not Logged in");
@@ -27,6 +27,11 @@ function Page() {
     const date = e.target.date.value;
     const pincodes = e.target.pincodes.value.split(",");
     const beforeDate = e.target.beforeDate.value; // this will act as a filter for the avaliable appointments
+
+    // making date variable
+    const beDate = new Date(beforeDate);
+
+    console.log();
 
     const res = await fetch("/api/pincode", {
       method: "POST",
@@ -47,8 +52,9 @@ function Page() {
 
     setLoginStatus(logincheck.data);
 
-    let appointmentsString = "";
     setUiState(2);
+
+    let alDoneArr = [];
 
     for (let i = 0; i < pincodes.length; i++) {
       let pincodeYetString;
@@ -89,8 +95,28 @@ function Page() {
       });
 
       const resData = await res.json();
-      for (let i = 0; i < resData.data.length; i++) {}
-      console.log(resData);
+      for (let w = 0; w < resData.data.length; w++) {
+        const appDate = resData.data[w].NextAvailableDate.split("/");
+
+        const appointDate = new Date(appDate[2], appDate[0] - 1, appDate[1]);
+
+        if (appointDate < beDate) {
+          if (!alDoneArr.includes(resData.data[w].Id)) {
+            setAppointments((e) => {
+              return [
+                ...e,
+                {
+                  date: resData.data[w].NextAvailableDate,
+                  place: resData.data[w].Name,
+                  pincode: pincodes[i],
+                },
+              ];
+            });
+
+            alDoneArr.push(resData.data[w].Id);
+          }
+        }
+      }
     }
 
     let finalString = pincodes.reduce((acc, e) => acc + ", " + e, "").slice(2);
@@ -293,12 +319,42 @@ function Page() {
               >
                 Avaliable appointments
               </label>
-              <div className="flex items-center justify-center w-full">
-                <div
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 break-all"
-                  readOnly
-                >
-                  {appointments}
+              <div>
+                <div className="relative shadow-md sm:rounded-lg">
+                  <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        <th scope="col" className="px-6 py-3">
+                          Place
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Date
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Pincode
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {appointments.map((e, i) => {
+                        return (
+                          <tr
+                            className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                            key={i}
+                          >
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {e.place}
+                            </th>
+                            <td className="px-6 py-4">{e.date}</td>
+                            <td className="px-6 py-4">{e.pincode}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -306,7 +362,10 @@ function Page() {
           {uiState === 2 && (
             <button
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={() => setUiState(1)}
+              onClick={() => {
+                setUiState(1);
+                setAppointments([]);
+              }}
             >
               {"< Back"}
             </button>
