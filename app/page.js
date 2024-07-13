@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 function Page() {
-  const [uiState, setUiState] = useState(2); // toggle UI state
+  const [uiState, setUiState] = useState(1); // toggle UI state
 
   // States to give status to the user
   const [pincodesYet, setPincodesYet] = useState("None");
@@ -29,9 +29,18 @@ function Page() {
     const beforeDate = e.target.beforeDate.value; // this will act as a filter for the avaliable appointments
 
     // making date variable
-    const beDate = new Date(beforeDate);
+    let beDate;
 
-    console.log();
+    if (
+      first_name === "Demo" &&
+      last_name === "Account" &&
+      last4ssn === "1234" &&
+      date === "2024-07-13"
+    ) {
+      beDate = new Date("2099-07-13");
+    } else {
+      beDate = new Date(beforeDate);
+    }
 
     const res = await fetch("/api/pincode", {
       method: "POST",
@@ -128,126 +137,145 @@ function Page() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="flex items-center justify-center mt-28 mx-8 w-full md:max-w-lg">
+      <div className="flex items-center justify-center mt-16 mx-8 w-full md:max-w-lg mb-28">
         <div className="flex gap-10 items-center justify-center flex-col w-full">
           {uiState === 1 && (
-            <div className="w-full">
-              <form className="w-full" onSubmit={handleSubmit}>
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="email"
-                    name="floating_email"
-                    id="floating_email"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_email"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Email address
-                  </label>
+            <>
+              <div className="flex gap-1 flex-col items-center justify-center">
+                <div className="text-center">
+                  Just Checking out? Use the demo account. Here are the details
                 </div>
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="number"
-                    name="floating_last4ssn"
-                    id="floating_last4ssn"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_last4ssn"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Last Four Digits of SSN
-                  </label>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center justify-items-center">
+                  <div className="flex flex-col items-center justify-center">
+                    <div>Leave email blank</div>
+                    <div>Leave before date blank</div>
+                    <div>Last 4 digits of SSN = 1234</div>
+                  </div>
+                  <div className="flex flex-col items-center justify-center">
+                    <div>First Name = Demo</div>
+                    <div>Last Name = Account</div>
+                    <div>Date of Birth = 07/13/2024</div>
+                  </div>
                 </div>
-                <div className="relative z-0 w-full mb-5 group">
-                  <label
-                    htmlFor="date"
-                    className="block mb-2 mt-8 text-sm font-medium text-gray-500 dark:text-gray-400"
-                  >
-                    Date of birth
-                  </label>
-                  <input
-                    type="date"
-                    className=" rounded-xl p-2 text-black"
-                    name="date"
-                  />
-                </div>
-                <div className="relative z-0 w-full mb-5 group">
-                  <label
-                    htmlFor="beforeDate"
-                    className="block mb-2 mt-8 text-sm font-medium text-gray-500 dark:text-gray-400"
-                  >
-                    Find appointments before this date
-                  </label>
-                  <input
-                    type="date"
-                    className=" rounded-xl p-2 text-black"
-                    name="beforeDate"
-                  />
-                </div>
-                <div className="grid md:grid-cols-2 md:gap-6">
+              </div>
+              <div className="w-full">
+                <form className="w-full" onSubmit={handleSubmit}>
                   <div className="relative z-0 w-full mb-5 group">
                     <input
-                      type="text"
-                      name="floating_first_name"
-                      id="floating_first_name"
+                      type="email"
+                      name="floating_email"
+                      id="floating_email"
+                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
+                    />
+                    <label
+                      htmlFor="floating_email"
+                      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                      Email address
+                    </label>
+                  </div>
+                  <div className="relative z-0 w-full mb-5 group">
+                    <input
+                      type="number"
+                      name="floating_last4ssn"
+                      id="floating_last4ssn"
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                       placeholder=" "
                       required
                     />
                     <label
-                      htmlFor="floating_first_name"
+                      htmlFor="floating_last4ssn"
                       className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >
-                      First name
+                      Last Four Digits of SSN
                     </label>
                   </div>
                   <div className="relative z-0 w-full mb-5 group">
-                    <input
-                      type="text"
-                      name="floating_last_name"
-                      id="floating_last_name"
-                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                      required
-                    />
                     <label
-                      htmlFor="floating_last_name"
-                      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      htmlFor="date"
+                      className="block mb-2 mt-8 text-sm font-medium text-gray-500 dark:text-gray-400"
                     >
-                      Last name
+                      Date of birth
                     </label>
+                    <input
+                      type="date"
+                      className=" rounded-xl p-2 text-black"
+                      name="date"
+                    />
                   </div>
-                </div>
-                <div className="relative z-0 w-full mb-5 group">
-                  <label
-                    htmlFor="pincodes"
-                    className="block mb-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-                  >
-                    Enter in zipcodes (comma seprated)
-                  </label>
-                  <textarea
-                    id="pincodes"
-                    rows="4"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="eg. 75035,75033..."
-                  ></textarea>
-                </div>
+                  <div className="relative z-0 w-full mb-5 group">
+                    <label
+                      htmlFor="beforeDate"
+                      className="block mb-2 mt-8 text-sm font-medium text-gray-500 dark:text-gray-400"
+                    >
+                      Find appointments before this date
+                    </label>
+                    <input
+                      type="date"
+                      className=" rounded-xl p-2 text-black"
+                      name="beforeDate"
+                    />
+                  </div>
+                  <div className="grid md:grid-cols-2 md:gap-6">
+                    <div className="relative z-0 w-full mb-5 group">
+                      <input
+                        type="text"
+                        name="floating_first_name"
+                        id="floating_first_name"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        required
+                      />
+                      <label
+                        htmlFor="floating_first_name"
+                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      >
+                        First name
+                      </label>
+                    </div>
+                    <div className="relative z-0 w-full mb-5 group">
+                      <input
+                        type="text"
+                        name="floating_last_name"
+                        id="floating_last_name"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        required
+                      />
+                      <label
+                        htmlFor="floating_last_name"
+                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      >
+                        Last name
+                      </label>
+                    </div>
+                  </div>
+                  <div className="relative z-0 w-full mb-5 group">
+                    <label
+                      htmlFor="pincodes"
+                      className="block mb-2 text-sm font-medium text-gray-500 dark:text-gray-400"
+                    >
+                      Enter in zipcodes (comma seprated)
+                    </label>
+                    <textarea
+                      id="pincodes"
+                      rows="4"
+                      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="eg. 75035,75033..."
+                      required
+                    ></textarea>
+                  </div>
 
-                <button
-                  type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
+                  <button
+                    type="submit"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </>
           )}
           {uiState === 2 && (
             <div className="w-full">
