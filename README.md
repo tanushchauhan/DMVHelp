@@ -1,3 +1,7 @@
+# Archive
+
+This application has been archived due to recent [auth changes to the API](https://github.com/tanushchauhan/DMVHelp/issues/1), and there are no plans for further development.
+
 # DMVHelp
 
 A Next JS web app to help you book DMV appointments in Texas.
